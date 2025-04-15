@@ -1,0 +1,105 @@
+{
+   "name": "Ingles(Español)",
+   "courses": [
+    {
+        "name": "Pronunciation",
+        "description": "desp",
+        "initDate": "01/06/2025",
+        "endDate": "01/12/2025",
+        "groups": [
+            {
+              "name": "X001",
+              "teacher": "Juan",
+              "schedule": [
+                {
+                    "day": 1,
+                    "init": "8:00 am",
+                    "end": "10:00 am"
+                },
+                {
+                    "day": 3,
+                    "init": "8:00 am",
+                    "end": "10:00 am"
+                }
+              ],
+              "students": [
+                "John",
+                "Daniel",
+                "Mario"
+              ]
+            },
+            {
+                "name": "X002",
+                "teacher": "Roman",
+                "schedule": [
+                  {
+                      "day": 1,
+                      "init": "10:00 am",
+                      "end": "12:00 am"
+                  },
+                  {
+                      "day": 3,
+                      "init": "10:00 am",
+                      "end": "12:00 am"
+                  }
+                ],
+                "students": [
+                  "Maria",
+                  "Dora",
+                  "Luis"
+                ]
+              }
+        ]
+    },
+    {
+        "name": "Grammar",
+        "description": "desp",
+        "initDate": "01/06/2025",
+        "endDate": "01/12/2025",
+        "groups": [
+            {
+              "name": "X001",
+              "teacher": "Riquelme",
+              "schedule": [
+                {
+                    "day": 1,
+                    "init": "4:00 pm",
+                    "end": "6:00 pm"
+                },
+                {
+                    "day": 3,
+                    "init": "4:00 pm",
+                    "end": "6:00 pm"
+                }
+              ],
+              "students": [
+                "John",
+                "Luis",
+                "Dora"
+              ]
+            },
+            {
+                "name": "X002",
+                "teacher": "Pepe",
+                "schedule": [
+                  {
+                      "day": 1,
+                      "init": "8:00 am",
+                      "end": "10:00 am"
+                  },
+                  {
+                      "day": 3,
+                      "init": "8:00 am",
+                      "end": "10:00 am"
+                  }
+                ],
+                "students": [
+                  "Maria",
+                  "John",
+                  "Luis"
+                ]
+              }
+        ]
+    }
+   ]
+}
