@@ -1,3 +1,4 @@
 export enum Collections {
-    CATEGORIES = 'categories'
+    CATEGORIES = 'categories',
+    USERS = 'users'
 }

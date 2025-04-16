@@ -7,11 +7,12 @@ import { CoursesList } from "./components/coursesList";
 import { GroupsList } from "./components/groupsList";
 import { Collections } from "../../db/collections";
 import {CategoriesResponse } from "../../models/backlessResponse";
+import { Course } from "../../models/courseCategory";
 
 export const Management = () => {
   const [categories, setCategories] = useState<CategoriesResponse[] | undefined>(undefined);
   const [selectedCategory, setSelectedCategory] = useState<CategoriesResponse | null>(null);
-  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
   useEffect(() => {
     if (!categories) {
@@ -23,7 +24,6 @@ export const Management = () => {
     setCategories((await dbConnect()?.getCollection(Collections.CATEGORIES))?.map(c => c) as CategoriesResponse[]);
   };
 
- 
   return (
     <div className="" style={{width: '75vw'}}>
       {

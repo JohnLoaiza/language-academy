@@ -37,8 +37,8 @@ export const styles = {
       backgroundColor: '#1E40AF',
     },
     grid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+      display: 'flex',
+      flexDirection: 'column' as const,
       gap: '1rem',
       overflowY: 'auto' as const,
     },

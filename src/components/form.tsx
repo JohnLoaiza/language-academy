@@ -41,7 +41,7 @@ export function DynamicForm<T>({ fields, onSubmit, onClose, title = "Nuevo curso
 
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
         <button style={styles.button} onClick={handleSubmit}>
-          Guardar
+          Crear
         </button>
         <button
           style={{ ...styles.button, backgroundColor: '#DC2626' }}

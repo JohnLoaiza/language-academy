@@ -9,11 +9,12 @@ import { CategoriesResponse } from "../../../models/backlessResponse";
 interface Props {
   category: CategoriesResponse;
   onBack: () => void;
-  onSelectCourse: (course: any) => void;
+  onSelectCourse: (course: Course) => void;
 }
 
 export const CoursesList = ({ category, onBack, onSelectCourse }: Props) => {
   const [showForm, setShowForm] = useState(false);
+
   const addCourse = async (data: any) => {
     const newCourse: Course = {
       name: data["Nombre"],
@@ -45,7 +46,7 @@ export const CoursesList = ({ category, onBack, onSelectCourse }: Props) => {
           </div>
 
           <button
-            style={{ ...styles.button, backgroundColor: "#6B7280" }}
+            style={{ ...styles.button, backgroundColor: "#6B7280", maxWidth: '100px'  }}
             onClick={onBack}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#4B5563")
@@ -54,47 +55,44 @@ export const CoursesList = ({ category, onBack, onSelectCourse }: Props) => {
               (e.currentTarget.style.backgroundColor = "#6B7280")
             }
           >
-            ← Volver
+            ← 
           </button>
 
-          <div style={{ width: "100%", marginTop: "1rem" }}>
-            <div style={styles.grid}>
-              {category.properties.courses.map((course) => (
-                <div
-                  key={course.name}
-                  style={styles.card}
-                  onClick={() => onSelectCourse(course)}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#eff6ff")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "white")
-                  }
-                >
-                  <div style={styles.cardTitle}>{course.name}</div>
-                </div>
-              ))}
-            </div>
-
-            <button
-              style={{ ...styles.button, marginTop: "1rem" }}
-              onClick={() => setShowForm(true)}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  styles.buttonHover.backgroundColor)
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  styles.button.backgroundColor)
-              }
-            >
-              + Nuevo Curso
-            </button>
+          <div style={styles.grid}>
+            {category.properties.courses.map((course) => (
+              <div
+                key={course.name}
+                style={styles.card}
+                onClick={() => onSelectCourse(course)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#eff6ff")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "white")
+                }
+              >
+                <div style={styles.cardTitle}>{course.name}</div>
+              </div>
+            ))}
           </div>
+          <button
+            style={styles.button}
+            onClick={() => setShowForm(true)}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor =
+                styles.buttonHover.backgroundColor)
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor =
+                styles.button.backgroundColor)
+            }
+          >
+            + Nuevo Curso
+          </button>
         </div>
       ) : (
         <DynamicForm
-          fields={["Nombre"]}
+          fields={["Nombre", "Descripcion", "Fecha inicial", "Fecha final"]}
           onSubmit={(data: any) => addCourse(data)}
           onClose={() => setShowForm(false)}
         ></DynamicForm>
