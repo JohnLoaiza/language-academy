@@ -1,4 +1,20 @@
-export const styles = {
+import { CSSProperties } from "react";
+
+interface Styles {
+  mainContainer: CSSProperties;
+  header: CSSProperties;
+  title: CSSProperties;
+  button: CSSProperties;
+  buttonHover: CSSProperties;
+  grid: CSSProperties;
+  thStyle: CSSProperties;
+  tdStyle: CSSProperties;
+  card: CSSProperties; 
+  cardTitle: CSSProperties
+  loading: CSSProperties
+}
+
+export const styles: Styles = {
     mainContainer: {
       display: 'flex',
       flexDirection: 'column' as const,
@@ -63,5 +79,14 @@ export const styles = {
       justifyContent: 'center',
       alignItems: 'center',
       color: '#6b7280',
+    },
+    thStyle: {
+      padding: '8px',
+      textAlign: 'left',
+      borderBottom: '2px solid #cbd5e0',
+    },
+    tdStyle: {
+      padding: "8px",
+      textAlign: "left",
     }
   };

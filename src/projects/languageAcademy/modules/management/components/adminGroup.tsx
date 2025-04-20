@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { styles } from "../../../../../styles";
-import { DynamicForm } from "../../../../../components/form";
 import {
   CategoriesResponse,
   UsersResponse,
 } from "../../../models/backlessResponse";
-import { Group, Schedule } from "../../../models/courseCategory";
+import { Course, Group, Schedule } from "../../../models/courseCategory";
 import { StudentForm } from "./studentForm";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
+import { InscriptionModel } from "../../../models/inscriptionModel";
 
 interface Props {
   group: Group;
   onBack: () => void;
   category: CategoriesResponse;
+    course: Course;
 }
 
 const dayNames = [
@@ -26,7 +27,7 @@ const dayNames = [
   "Sábado",
 ];
 
-export const AdminGroup = ({ group, onBack, category }: Props) => {
+export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [showForm, setShowForm] = useState(false);
 
   const addStudent = async (data: UsersResponse) => {
@@ -36,9 +37,22 @@ export const AdminGroup = ({ group, onBack, category }: Props) => {
       category.id,
       category
     );
+    const newInscription: InscriptionModel = {
+      studentId: data.properties.username,
+      category: category.properties.name,
+      course: course.name,
+      group: group.name,
+      scores: group.scores
+    }
+   
     if (response) {
-      alert("Estudiante agregado correctamente");
-      setShowForm(false);
+      var createInscription = await dbConnect()?.addDocument(Collections.INSCRIPTIONS, newInscription)
+      if (createInscription) {
+        alert("Estudiante agregado correctamente");
+        setShowForm(false);
+      } else {
+        alert("Error al agregar estudiante");
+      }
     } else {
       alert("Error al agregar estudiante");
     }
@@ -141,11 +155,11 @@ export const AdminGroup = ({ group, onBack, category }: Props) => {
             onClick={() => setShowForm(true)}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor =
-                styles.buttonHover.backgroundColor)
+                styles.buttonHover.backgroundColor!)
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor =
-                styles.button.backgroundColor)
+                styles.button.backgroundColor!)
             }
           >
             + Nuevo estudiante

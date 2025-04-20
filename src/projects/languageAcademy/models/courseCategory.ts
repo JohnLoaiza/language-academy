@@ -1,3 +1,5 @@
+import { ScoreModel } from "./scoreModel";
+
 export interface Schedule {
     day: number;
     init: string;
@@ -9,6 +11,7 @@ export interface Schedule {
     teacher: string;
     schedule: Schedule[];
     students: string[];
+    scores: ScoreModel[]
   }
   
   export interface Course {

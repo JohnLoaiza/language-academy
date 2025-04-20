@@ -24,6 +24,7 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
       teacher: data["Profesor"],
       schedule: [],
       students: [],
+      scores: [],
     };
     category.properties.courses
       .find((c) => c.name === course.name)
@@ -46,6 +47,7 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
       {!showForm ? (
         currentGroup ? (
           <AdminGroup
+          course={course}
             group={currentGroup}
             onBack={() => setCurrentGroup(null)}
             category={category}
@@ -96,11 +98,11 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
               onClick={() => setShowForm(true)}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor =
-                  styles.buttonHover.backgroundColor)
+                  styles.buttonHover.backgroundColor!)
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.backgroundColor =
-                  styles.button.backgroundColor)
+                  styles.button.backgroundColor!)
               }
             >
               + Nuevo Grupo

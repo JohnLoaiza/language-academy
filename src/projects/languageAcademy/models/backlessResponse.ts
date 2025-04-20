@@ -1,4 +1,5 @@
 import { CourseCategory } from "./courseCategory"
+import { InscriptionModel } from "./inscriptionModel"
 import { User } from "./user"
 
 export interface BacklessResponse {
@@ -14,4 +15,9 @@ export interface CategoriesResponse {
 export interface UsersResponse {
     id: string,
     properties: User
+}
+
+export interface InscriptionsResponse {
+    id: string,
+    properties: InscriptionModel
 }
