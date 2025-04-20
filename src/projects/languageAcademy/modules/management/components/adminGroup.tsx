@@ -38,7 +38,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
       category
     );
     const newInscription: InscriptionModel = {
-      studentId: data.properties.username,
+      userId: data.properties.username,
       category: category.properties.name,
       course: course.name,
       group: group.name,

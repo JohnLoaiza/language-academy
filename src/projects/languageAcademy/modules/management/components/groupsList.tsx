@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { styles } from "../../../../../styles";
-import { DynamicForm } from "../../../../../components/form";
 import { Course, Group } from "../../../models/courseCategory";
-import { CategoriesResponse } from "../../../models/backlessResponse";
+import {
+  CategoriesResponse,
+  UsersResponse,
+} from "../../../models/backlessResponse";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { AdminGroup } from "./adminGroup";
+import { GroupForm } from "./groupFrom";
+import { InscriptionModel } from "../../../models/inscriptionModel";
 
 interface Props {
   course: Course;
@@ -18,14 +22,15 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
 
   const [currentGroup, setCurrentGroup] = useState<Group | null>(null);
 
-  const addGroup = async (data: any) => {
+  const addGroup = async (user: UsersResponse, name: string) => {
     const newGroup: Group = {
-      name: data["Nombre"],
-      teacher: data["Profesor"],
+      name: name,
+      teacher: user.properties.username,
       schedule: [],
       students: [],
       scores: [],
     };
+
     category.properties.courses
       .find((c) => c.name === course.name)
       ?.groups.push(newGroup);
@@ -35,8 +40,22 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
       category
     );
     if (response) {
-      alert("Grupo creado correctamente");
-      setShowForm(false);
+      const newInscription: InscriptionModel = {
+        userId: user.properties.username,
+        category: category.properties.name,
+        course: course.name,
+        group: name,
+      };
+      var createInscription = await dbConnect()?.addDocument(
+        Collections.INSCRIPTIONS,
+        newInscription
+      );
+      if (createInscription) {
+        alert("Grupo creado correctamente");
+        setShowForm(false);
+      } else {
+        alert("No se pudo insertar grupo");
+      }
     } else {
       alert("No se pudo insertar grupo");
     }
@@ -47,7 +66,7 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
       {!showForm ? (
         currentGroup ? (
           <AdminGroup
-          course={course}
+            course={course}
             group={currentGroup}
             onBack={() => setCurrentGroup(null)}
             category={category}
@@ -110,11 +129,10 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
           </div>
         )
       ) : (
-        <DynamicForm
-          fields={["Nombre", "Profesor"]}
-          onSubmit={(data: any) => addGroup(data)}
-          onClose={() => setShowForm(false)}
-        ></DynamicForm>
+        <GroupForm
+          addGroup={(user: UsersResponse, name: string) => addGroup(user, name)}
+          onBack={() => setShowForm(false)}
+        ></GroupForm>
       )}
     </>
   );
