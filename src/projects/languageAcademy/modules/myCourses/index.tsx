@@ -4,8 +4,7 @@ import { Collections } from "../../db/collections";
 import { InscriptionsResponse } from "../../models/backlessResponse";
 import { styles } from "../../../../styles";
 import { InscriptionModel } from "../../models/inscriptionModel";
-import { ScoreModel } from "../../models/scoreModel";
-import { Admin, Sesion } from "backless";
+import { Sesion } from "backless";
 
 export const MyCourses = () => {
   const [inscriptions, setInscriptions] = useState<

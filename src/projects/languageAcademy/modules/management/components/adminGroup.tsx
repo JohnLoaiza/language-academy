@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styles } from "../../../../../styles";
 import {
   CategoriesResponse,
+  InscriptionsResponse,
   UsersResponse,
 } from "../../../models/backlessResponse";
 import { Course, Group, Schedule } from "../../../models/courseCategory";
@@ -9,12 +10,15 @@ import { StudentForm } from "./studentForm";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { InscriptionModel } from "../../../models/inscriptionModel";
+import { Sesion } from "backless";
+import { ScoreTable } from "../../myClasses/components/scoreComponent";
+import { StudentCard } from "./studentCard";
 
 interface Props {
   group: Group;
   onBack: () => void;
   category: CategoriesResponse;
-    course: Course;
+  course: Course;
 }
 
 const dayNames = [
@@ -29,6 +33,9 @@ const dayNames = [
 
 export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [showForm, setShowForm] = useState(false);
+  const [inscriptions, setInscriptions] = useState<
+    InscriptionsResponse[] | undefined
+  >(undefined);
 
   const addStudent = async (data: UsersResponse) => {
     group.students.push(data.properties.username);
@@ -42,11 +49,14 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
       category: category.properties.name,
       course: course.name,
       group: group.name,
-      scores: group.scores
-    }
-   
+      scores: group.scores,
+    };
+
     if (response) {
-      var createInscription = await dbConnect()?.addDocument(Collections.INSCRIPTIONS, newInscription)
+      var createInscription = await dbConnect()?.addDocument(
+        Collections.INSCRIPTIONS,
+        newInscription
+      );
       if (createInscription) {
         alert("Estudiante agregado correctamente");
         setShowForm(false);
@@ -56,6 +66,20 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
     } else {
       alert("Error al agregar estudiante");
     }
+  };
+
+  useEffect(() => {
+    if (!inscriptions) {
+      getInscriptions();
+    }
+  }, []);
+
+  const getInscriptions = async () => {
+    setInscriptions(
+      (await dbConnect()?.getCollection(Collections.INSCRIPTIONS))?.map(
+        (c) => c
+      ) as InscriptionsResponse[]
+    );
   };
 
   return (
@@ -128,18 +152,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             <div style={styles.grid}>
               {group.students.length > 0 ? (
                 group.students.map((student: string) => (
-                  <div
-                    key={student}
-                    style={styles.card}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#eff6ff")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "white")
-                    }
-                  >
-                    <div style={styles.cardTitle}>{student}</div>
-                  </div>
+                  <StudentCard student={student} inscriptions={inscriptions!} category={category} course={course} group={group}></StudentCard>
                 ))
               ) : (
                 <p style={{ color: "#6b7280" }}>

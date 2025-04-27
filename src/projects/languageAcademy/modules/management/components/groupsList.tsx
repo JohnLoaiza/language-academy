@@ -8,8 +8,9 @@ import {
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { AdminGroup } from "./adminGroup";
-import { GroupForm } from "./groupFrom";
+import { GroupForm, ScheduleItem } from "./groupForm";
 import { InscriptionModel } from "../../../models/inscriptionModel";
+import { ScoreModel } from "../../../models/scoreModel";
 
 interface Props {
   course: Course;
@@ -22,13 +23,13 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
 
   const [currentGroup, setCurrentGroup] = useState<Group | null>(null);
 
-  const addGroup = async (user: UsersResponse, name: string) => {
+  const addGroup = async (user: UsersResponse, name: string, schedules: ScheduleItem[], scores: ScoreModel[]) => {
     const newGroup: Group = {
       name: name,
       teacher: user.properties.username,
-      schedule: [],
+      schedule: schedules,
       students: [],
-      scores: [],
+      scores: scores,
     };
 
     category.properties.courses
@@ -45,6 +46,7 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
         category: category.properties.name,
         course: course.name,
         group: name,
+        scores: []
       };
       var createInscription = await dbConnect()?.addDocument(
         Collections.INSCRIPTIONS,
@@ -130,7 +132,7 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
         )
       ) : (
         <GroupForm
-          addGroup={(user: UsersResponse, name: string) => addGroup(user, name)}
+          addGroup={(user: UsersResponse, name: string, schedules: ScheduleItem[], scores: ScoreModel[]) => addGroup(user, name, schedules, scores)}
           onBack={() => setShowForm(false)}
         ></GroupForm>
       )}

@@ -6,6 +6,7 @@ import { styles } from "../../../../styles";
 import { InscriptionModel } from "../../models/inscriptionModel";
 import { ScoreModel } from "../../models/scoreModel";
 import { Sesion } from "backless";
+import { ScoreTable } from "./components/scoreComponent";
 
 export const MyClasses = () => {
   const [inscriptions, setInscriptions] = useState<
@@ -14,17 +15,19 @@ export const MyClasses = () => {
 
   useEffect(() => {
     if (!inscriptions) {
-      getCategories();
+      getInscriptions();
     }
   }, []);
 
-  const getCategories = async () => {
+  const getInscriptions = async () => {
     setInscriptions(
       ((await dbConnect()?.getCollection(Collections.INSCRIPTIONS))?.map(
         (c) => c
       ) as InscriptionsResponse[]).filter((i) => i.properties.userId === Sesion.props.user.username)
     );
   };
+
+  console.log(inscriptions)
 
   return (
     <div className="" style={{ width: "75vw" }}>
@@ -37,7 +40,7 @@ export const MyClasses = () => {
             ?.map((i: InscriptionsResponse) => i.properties)
             .map((i: InscriptionModel) => (
               <div
-                key={i.course}
+                key={i.group}
                 style={{
                   ...styles.card,
                   display: "flex",
@@ -68,38 +71,7 @@ export const MyClasses = () => {
                 </div>
 
                 {/* Columna derecha: tabla de calificaciones */}
-                <div style={{ flex: 1 }}>
-                  <p>
-                    <strong>Calificaciones:</strong>
-                  </p>
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    <thead>
-                      <tr style={{ backgroundColor: "#f3f4f6" }}>
-                        <th style={styles.thStyle}>Título</th>
-                        <th style={styles.thStyle}>Nota</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      { i.scores && i.scores.map((score: ScoreModel, index) => (
-                        <tr
-                          key={index}
-                          style={{ borderBottom: "1px solid #e5e7eb" }}
-                        >
-                          <td style={styles.tdStyle}>{score.title}</td>
-                          <td style={styles.tdStyle}>
-                            {score.finalValue ?? 0}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+               <ScoreTable scores={i.scores}></ScoreTable>
               </div>
             ))}
         </div>

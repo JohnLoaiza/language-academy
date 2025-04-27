@@ -5,6 +5,5 @@ export interface InscriptionModel {
     category: string,
     course: string,
     group: string,
-    scores?: ScoreModel[]
-
+    scores: ScoreModel[]
 }
