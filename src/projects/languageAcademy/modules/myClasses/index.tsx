@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { dbConnect } from "../../db";
-import { Collections } from "../../db/collections";
 import { InscriptionsResponse } from "../../models/backlessResponse";
 import { styles } from "../../../../styles";
 import { InscriptionModel } from "../../models/inscriptionModel";
-import { ScoreModel } from "../../models/scoreModel";
 import { Sesion } from "backless";
 import { ScoreTable } from "./components/scoreComponent";
+import { DbController } from "../../db/DbController";
 
 export const MyClasses = () => {
   const [inscriptions, setInscriptions] = useState<
@@ -21,13 +19,9 @@ export const MyClasses = () => {
 
   const getInscriptions = async () => {
     setInscriptions(
-      ((await dbConnect()?.getCollection(Collections.INSCRIPTIONS))?.map(
-        (c) => c
-      ) as InscriptionsResponse[]).filter((i) => i.properties.userId === Sesion.props.user.username)
+      (await DbController.getInscriptions()).filter((i) => i.properties.userId === Sesion.props.user.username)
     );
   };
-
-  console.log(inscriptions)
 
   return (
     <div className="" style={{ width: "75vw" }}>

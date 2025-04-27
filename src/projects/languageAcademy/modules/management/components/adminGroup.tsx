@@ -10,9 +10,8 @@ import { StudentForm } from "./studentForm";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { InscriptionModel } from "../../../models/inscriptionModel";
-import { Sesion } from "backless";
-import { ScoreTable } from "../../myClasses/components/scoreComponent";
 import { StudentCard } from "./studentCard";
+import { DbController } from "../../../db/DbController";
 
 interface Props {
   group: Group;
@@ -36,6 +35,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [inscriptions, setInscriptions] = useState<
     InscriptionsResponse[] | undefined
   >(undefined);
+
 
   const addStudent = async (data: UsersResponse) => {
     group.students.push(data.properties.username);
@@ -76,9 +76,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
 
   const getInscriptions = async () => {
     setInscriptions(
-      (await dbConnect()?.getCollection(Collections.INSCRIPTIONS))?.map(
-        (c) => c
-      ) as InscriptionsResponse[]
+     await DbController.getInscriptions()
     );
   };
 
