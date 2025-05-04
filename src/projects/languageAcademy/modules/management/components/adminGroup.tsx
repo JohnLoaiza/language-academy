@@ -5,7 +5,12 @@ import {
   InscriptionsResponse,
   UsersResponse,
 } from "../../../models/backlessResponse";
-import { Attendance, Course, Group, Schedule } from "../../../models/courseCategory";
+import {
+  Attendance,
+  Course,
+  Group,
+  Schedule,
+} from "../../../models/courseCategory";
 import { StudentForm } from "./studentForm";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
@@ -13,6 +18,7 @@ import { InscriptionModel } from "../../../models/inscriptionModel";
 import { StudentCard } from "./studentCard";
 import { DbController } from "../../../db/DbController";
 import { AttendanceForm } from "./attendance";
+import { RemedialList } from "./remedialList";
 
 interface Props {
   group: Group;
@@ -34,6 +40,7 @@ const dayNames = [
 export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [showForm, setShowForm] = useState(false);
   const [showAttendance, setShowAttendance] = useState(false);
+  const [showLeveling, setShowLeveling] = useState(false); // NUEVO
   const [inscriptions, setInscriptions] = useState<
     InscriptionsResponse[] | undefined
   >(undefined);
@@ -97,7 +104,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
 
   return (
     <>
-      {!showForm && !showAttendance ? (
+      {!showForm && !showAttendance && !showLeveling ? (
         <div style={styles.mainContainer}>
           <div style={styles.header}>
             <h2 style={styles.title}>Gestión de Grupo</h2>
@@ -211,6 +218,23 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
           >
             Tomar asistencia
           </button>
+
+          <button
+            style={{
+              ...styles.button,
+              marginTop: "1rem",
+              backgroundColor: "#10b981",
+            }}
+            onClick={() => setShowLeveling(true)}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#059669")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#10b981")
+            }
+          >
+            Ver nivelaciones
+          </button>
         </div>
       ) : showForm ? (
         <StudentForm
@@ -219,12 +243,19 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
           group={group}
           category={category}
         />
-      ) : (
+      ) : showAttendance ? (
         <AttendanceForm
           students={group.students}
           onSave={saveAttendance}
           onBack={() => setShowAttendance(false)}
           pastAttendance={group.attendance}
+        />
+      ) : (
+        <RemedialList
+          remedials={group.remedials ?? []}
+          onBack={() => setShowLeveling(false)}
+          category={category}
+          group={group}
         />
       )}
     </>

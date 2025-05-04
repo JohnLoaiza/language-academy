@@ -15,14 +15,25 @@ export interface Schedule {
     date: string,
     records: AttendanceRecord[]
   }
-  
+
+  export interface RemedialRequest {
+    id: string;
+    student: string; // username o userId
+    requestedAt: string; // ISO date string
+    status: "pendiente" | "aceptada" | "rechazada" | "resuelta";
+    instructions?: string; // Qué debe hacer el estudiante (rellenado por el profe)
+    studentResponse?: string; // Lo que responde el estudiante
+    resolvedAt?: string; // Cuando el profe lo marca como resuelto
+  }
+
   export interface Group {
     name: string;
     teacher: string;
     schedule: Schedule[];
     students: string[];
     scores: ScoreModel[],
-    attendance: Attendance[]
+    attendance: Attendance[],
+    remedials: RemedialRequest[]
   }
   
   export interface Course {

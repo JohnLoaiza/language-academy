@@ -30,7 +30,8 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
       schedule: schedules,
       students: [],
       scores: scores,
-      attendance: []
+      attendance: [],
+      remedials: []
     };
 
     category.properties.courses

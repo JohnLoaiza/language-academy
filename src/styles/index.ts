@@ -65,7 +65,7 @@ export const styles: Styles = {
       boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
       cursor: 'pointer',
       transition: 'background-color 0.2s ease-in-out',
-       width: '30vw',
+       width: '50vw',
       maxWidth: '900px'
     },
     cardTitle: {
