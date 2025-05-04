@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { dbConnect } from "../../db";
-import { Collections } from "../../db/collections";
 import {
   CategoriesResponse,
   InscriptionsResponse,
