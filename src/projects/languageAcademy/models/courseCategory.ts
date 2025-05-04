@@ -5,13 +5,24 @@ export interface Schedule {
     init: string;
     end: string;
   }
+
+  export interface AttendanceRecord {
+    student: string,
+    present: boolean
+  }
+
+  export interface Attendance {
+    date: string,
+    records: AttendanceRecord[]
+  }
   
   export interface Group {
     name: string;
     teacher: string;
     schedule: Schedule[];
     students: string[];
-    scores: ScoreModel[]
+    scores: ScoreModel[],
+    attendance: Attendance[]
   }
   
   export interface Course {

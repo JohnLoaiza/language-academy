@@ -5,13 +5,14 @@ import {
   InscriptionsResponse,
   UsersResponse,
 } from "../../../models/backlessResponse";
-import { Course, Group, Schedule } from "../../../models/courseCategory";
+import { Attendance, Course, Group, Schedule } from "../../../models/courseCategory";
 import { StudentForm } from "./studentForm";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { InscriptionModel } from "../../../models/inscriptionModel";
 import { StudentCard } from "./studentCard";
 import { DbController } from "../../../db/DbController";
+import { AttendanceForm } from "./attendance";
 
 interface Props {
   group: Group;
@@ -27,19 +28,19 @@ const dayNames = [
   "Miércoles",
   "Jueves",
   "Viernes",
-  "Sábado",
+  "Sabado",
 ];
 
 export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [showForm, setShowForm] = useState(false);
+  const [showAttendance, setShowAttendance] = useState(false);
   const [inscriptions, setInscriptions] = useState<
     InscriptionsResponse[] | undefined
   >(undefined);
 
-
   const addStudent = async (data: UsersResponse) => {
     group.students.push(data.properties.username);
-    var response = await dbConnect()?.editDocument(
+    const response = await dbConnect()?.editDocument(
       Collections.CATEGORIES,
       category.id,
       category
@@ -53,7 +54,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
     };
 
     if (response) {
-      var createInscription = await dbConnect()?.addDocument(
+      const createInscription = await dbConnect()?.addDocument(
         Collections.INSCRIPTIONS,
         newInscription
       );
@@ -68,6 +69,22 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
     }
   };
 
+  const saveAttendance = (entry: Attendance) => {
+    if (!group.attendance) group.attendance = [];
+    group.attendance.push(entry);
+
+    dbConnect()
+      ?.editDocument(Collections.CATEGORIES, category.id, category)
+      .then((res) => {
+        if (res) {
+          alert("Asistencia guardada");
+          setShowAttendance(false);
+        } else {
+          alert("Error al guardar la asistencia");
+        }
+      });
+  };
+
   useEffect(() => {
     if (!inscriptions) {
       getInscriptions();
@@ -75,14 +92,12 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   }, []);
 
   const getInscriptions = async () => {
-    setInscriptions(
-     await DbController.getInscriptions()
-    );
+    setInscriptions(await DbController.getInscriptions());
   };
 
   return (
     <>
-      {!showForm ? (
+      {!showForm && !showAttendance ? (
         <div style={styles.mainContainer}>
           <div style={styles.header}>
             <h2 style={styles.title}>Gestión de Grupo</h2>
@@ -105,7 +120,6 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             ←
           </button>
 
-          {/* Información del grupo */}
           <div style={styles.grid}>
             <div style={styles.card}>
               <p>
@@ -127,7 +141,6 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             </div>
           </div>
 
-          {/* Listado de estudiantes */}
           <h3
             style={{
               marginTop: "2rem",
@@ -141,7 +154,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
 
           <div
             style={{
-              maxHeight: "300px", // puedes ajustar este valor según lo que te convenga
+              maxHeight: "300px",
               overflowY: "auto",
               paddingRight: "0.5rem",
               marginBottom: "1rem",
@@ -150,7 +163,14 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             <div style={styles.grid}>
               {group.students.length > 0 ? (
                 group.students.map((student: string) => (
-                  <StudentCard student={student} inscriptions={inscriptions!} category={category} course={course} group={group}></StudentCard>
+                  <StudentCard
+                    key={student}
+                    student={student}
+                    inscriptions={inscriptions!}
+                    category={category}
+                    course={course}
+                    group={group}
+                  />
                 ))
               ) : (
                 <p style={{ color: "#6b7280" }}>
@@ -160,7 +180,6 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             </div>
           </div>
 
-          {/* Botón para agregar nuevo estudiante */}
           <button
             style={{ ...styles.button, marginTop: "1rem" }}
             onClick={() => setShowForm(true)}
@@ -175,14 +194,38 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
           >
             + Nuevo estudiante
           </button>
+
+          <button
+            style={{
+              ...styles.button,
+              marginTop: "1rem",
+              backgroundColor: "#2563eb",
+            }}
+            onClick={() => setShowAttendance(true)}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#1d4ed8")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#2563eb")
+            }
+          >
+            Tomar asistencia
+          </button>
         </div>
-      ) : (
+      ) : showForm ? (
         <StudentForm
           addStudent={addStudent}
           onBack={() => setShowForm(false)}
           group={group}
           category={category}
-        ></StudentForm>
+        />
+      ) : (
+        <AttendanceForm
+          students={group.students}
+          onSave={saveAttendance}
+          onBack={() => setShowAttendance(false)}
+          pastAttendance={group.attendance}
+        />
       )}
     </>
   );
