@@ -16,7 +16,7 @@ export const ActivitySubmissionView: React.FC<Props> = ({
   onClose,
 }) => {
 
-    const myActivity : Activity | undefined = inscription.properties.activities!.find(a => a.id == activity.id)
+    const myActivity : Activity | undefined = inscription.properties.activities! ? inscription.properties.activities!.find(a => a.id == activity.id) : undefined
 
   const [writtenAnswer, setWrittenAnswer] = useState(myActivity && myActivity.response ? myActivity.response : "");
   const [file, setFile] = useState<File | null>(null);
@@ -138,7 +138,7 @@ export const ActivitySubmissionView: React.FC<Props> = ({
               }}
               onClick={() => window.open(myActivity.submissionUrl)}
             >
-              Abrir archivo adjunto
+              {"Ver archivo adjunto"}
             </button>}
             <input
               type="file"

@@ -16,7 +16,7 @@ import { ActivitySubmissionView } from "./components/activitySubmission";
 export const MyClasses = () => {
   const [inscriptions, setInscriptions] = useState<InscriptionsResponse[] | undefined>(undefined);
   const [categories, setCategories] = useState<CategoriesResponse[] | undefined>(undefined);
-  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  //const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [selectedInscription, setSelectedInscription] = useState<InscriptionsResponse | null>(null);
 
@@ -47,6 +47,8 @@ export const MyClasses = () => {
   };
 
   const selectActivity = (activity: Activity, inscription: InscriptionsResponse) => {
+    console.log('inscription es');
+    console.log(inscription);
     setSelectedInscription(inscription)
     setSelectedActivity(activity)
   }
@@ -140,14 +142,14 @@ export const MyClasses = () => {
                     )}
                     <button
                       style={btnStyle("#6366f1")}
-                      onClick={() => setExpandedGroup(expandedGroup === i.group ? null : i.group)}
+                      onClick={() => setSelectedInscription(selectedInscription && selectedInscription.id === iRes.id ? null : iRes)}
                     >
-                      {expandedGroup === i.group ? "Ocultar actividades" : "Ver actividades"}
+                      {selectedInscription && selectedInscription.id === iRes.id? "Ocultar actividades" : "Ver actividades"}
                     </button>
                   </div>
                 </div>
 
-                {expandedGroup === i.group && group?.activities?.length! > 0 && (
+                {selectedInscription && selectedInscription.id === iRes.id && group?.activities?.length! > 0 && (
                   <div style={{ marginTop: "1rem", width: "100%" }}>
                     <h4 style={{ marginBottom: "0.5rem" }}>Actividades:</h4>
                     <ul style={{ paddingLeft: "1.2rem" }}>
