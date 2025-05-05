@@ -1,3 +1,4 @@
+import { Activity } from "./courseCategory";
 import { ScoreModel } from "./scoreModel";
 
 export interface InscriptionModel {
@@ -5,5 +6,6 @@ export interface InscriptionModel {
     category: string,
     course: string,
     group: string,
-    scores: ScoreModel[]
+    scores: ScoreModel[],
+    activities?: Activity[]; // ✅ Agregado aquí
 }

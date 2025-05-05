@@ -19,6 +19,7 @@ import { StudentCard } from "./studentCard";
 import { DbController } from "../../../db/DbController";
 import { AttendanceForm } from "./attendance";
 import { RemedialList } from "./remedialList";
+import { ActivityList } from "./activityList";
 
 interface Props {
   group: Group;
@@ -34,13 +35,14 @@ const dayNames = [
   "Miércoles",
   "Jueves",
   "Viernes",
-  "Sabado",
+  "Sábado",
 ];
 
 export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [showForm, setShowForm] = useState(false);
   const [showAttendance, setShowAttendance] = useState(false);
-  const [showLeveling, setShowLeveling] = useState(false); // NUEVO
+  const [showLeveling, setShowLeveling] = useState(false);
+  const [showActivities, setShowActivities] = useState(false); // NUEVO
   const [inscriptions, setInscriptions] = useState<
     InscriptionsResponse[] | undefined
   >(undefined);
@@ -104,7 +106,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
 
   return (
     <>
-      {!showForm && !showAttendance && !showLeveling ? (
+      {!showForm && !showAttendance && !showLeveling && !showActivities ? ( // AGREGADO
         <div style={styles.mainContainer}>
           <div style={styles.header}>
             <h2 style={styles.title}>Gestión de Grupo</h2>
@@ -235,6 +237,23 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
           >
             Ver nivelaciones
           </button>
+
+          <button
+            style={{
+              ...styles.button,
+              marginTop: "1rem",
+              backgroundColor: "#8b5cf6",
+            }}
+            onClick={() => setShowActivities(true)}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#7c3aed")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#8b5cf6")
+            }
+          >
+            Ver actividades
+          </button>
         </div>
       ) : showForm ? (
         <StudentForm
@@ -250,12 +269,18 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
           onBack={() => setShowAttendance(false)}
           pastAttendance={group.attendance}
         />
-      ) : (
+      ) : showLeveling ? (
         <RemedialList
           remedials={group.remedials ?? []}
           onBack={() => setShowLeveling(false)}
           category={category}
           group={group}
+        />
+      ) : (
+        <ActivityList
+          group={group}
+          category={category}
+          onBack={() => setShowActivities(false)}
         />
       )}
     </>
