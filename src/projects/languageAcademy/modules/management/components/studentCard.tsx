@@ -4,11 +4,12 @@ import {
   CategoriesResponse,
   InscriptionsResponse,
 } from "../../../models/backlessResponse";
-import { Course, Group } from "../../../models/courseCategory";
+import { Activity, Course, Group } from "../../../models/courseCategory";
 import { styles } from "../../../../../styles";
 import { ScoreModel } from "../../../models/scoreModel";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
+import { ActivityList } from "../../myClasses/components/activityList";
 
 interface StudentCardProps {
   student: string;
@@ -16,6 +17,7 @@ interface StudentCardProps {
   category: CategoriesResponse;
   course: Course;
   group: Group;
+  onSelectActivity?: (activity: Activity, inscription: InscriptionsResponse) => void
 }
 
 export const StudentCard: React.FC<StudentCardProps> = ({
@@ -24,6 +26,7 @@ export const StudentCard: React.FC<StudentCardProps> = ({
   category,
   course,
   group,
+  onSelectActivity
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [localScores, setLocalScores] = useState<ScoreModel[] | null>(null);
@@ -113,6 +116,7 @@ export const StudentCard: React.FC<StudentCardProps> = ({
               Confirmar cambios
             </button>
           )}
+          <ActivityList activities={group.activities!} inscription={inscription} onSelectActivity={onSelectActivity!}></ActivityList>
         </div>
       )}
     </div>

@@ -11,7 +11,7 @@ interface Props {
   category: CategoriesResponse;
 }
 
-export const ActivityList = ({ group,  onBack, category }: Props) => {
+export const ActivityManager = ({ group,  onBack, category }: Props) => {
   const [newActivity, setNewActivity] = useState<Partial<Activity>>({});
   const [uploading, setUploading] = useState(false);
   const [showForm, setShowForm] = useState(false);

@@ -10,15 +10,24 @@ interface Props {
   onClose: () => void;
 }
 
+export const findMyActivity = (
+  inscription: InscriptionsResponse,
+  activityId: string
+): Activity | undefined =>
+  inscription.properties.activities!
+    ? inscription.properties.activities!.find((a) => a.id == activityId)
+    : undefined;
+
 export const ActivitySubmissionView: React.FC<Props> = ({
   activity,
   inscription,
   onClose,
 }) => {
+  const myActivity: Activity | undefined = findMyActivity(inscription!, activity.id);
 
-    const myActivity : Activity | undefined = inscription.properties.activities! ? inscription.properties.activities!.find(a => a.id == activity.id) : undefined
-
-  const [writtenAnswer, setWrittenAnswer] = useState(myActivity && myActivity.response ? myActivity.response : "");
+  const [writtenAnswer, setWrittenAnswer] = useState(
+    myActivity && myActivity.response ? myActivity.response : ""
+  );
   const [file, setFile] = useState<File | null>(null);
 
   const isSubmitted = !!activity.response || !!activity.submissionUrl;
@@ -68,9 +77,15 @@ export const ActivitySubmissionView: React.FC<Props> = ({
       }}
     >
       <h2 style={{ marginBottom: "1rem" }}>Entregar actividad</h2>
-      <p><strong>Título:</strong> {activity.title}</p>
-      <p><strong>Tipo:</strong> {activity.type}</p>
-      <p><strong>Fecha:</strong> {new Date(activity.date).toLocaleDateString()}</p>
+      <p>
+        <strong>Título:</strong> {activity.title}
+      </p>
+      <p>
+        <strong>Tipo:</strong> {activity.type}
+      </p>
+      <p>
+        <strong>Fecha:</strong> {new Date(activity.date).toLocaleDateString()}
+      </p>
 
       {activity.fileUrl && (
         <p>
@@ -86,7 +101,9 @@ export const ActivitySubmissionView: React.FC<Props> = ({
       )}
 
       <br />
-      <label><strong>Descripción:</strong></label>
+      <label>
+        <strong>Descripción:</strong>
+      </label>
       <p>{activity.description}</p>
 
       {isSubmitted ? (
@@ -94,8 +111,16 @@ export const ActivitySubmissionView: React.FC<Props> = ({
           <h3 style={{ color: "#10b981" }}>Ya entregaste esta actividad</h3>
           {activity.response && (
             <div>
-              <p><strong>Tu respuesta:</strong></p>
-              <p style={{ background: "#e5e7eb", padding: "0.5rem", borderRadius: "4px" }}>
+              <p>
+                <strong>Tu respuesta:</strong>
+              </p>
+              <p
+                style={{
+                  background: "#e5e7eb",
+                  padding: "0.5rem",
+                  borderRadius: "4px",
+                }}
+              >
                 {activity.response}
               </p>
             </div>
@@ -116,30 +141,41 @@ export const ActivitySubmissionView: React.FC<Props> = ({
       ) : (
         <>
           <div style={{ marginTop: "1rem" }}>
-            <label><strong>Respuesta:</strong></label>
+            <label>
+              <strong>Respuesta:</strong>
+            </label>
             <textarea
               value={writtenAnswer}
               onChange={(e) => setWrittenAnswer(e.target.value)}
               placeholder="Escribe tu respuesta aquí..."
-              style={{ width: "100%", height: "100px", marginTop: "0.5rem", padding: "0.5rem" }}
+              style={{
+                width: "100%",
+                height: "100px",
+                marginTop: "0.5rem",
+                padding: "0.5rem",
+              }}
             />
           </div>
 
           <div style={{ marginTop: "1rem" }}>
-            <label><strong>Subir archivo:</strong></label>
+            <label>
+              <strong>Subir archivo:</strong>
+            </label>
             <br></br>
-            {myActivity && myActivity.submissionUrl && <button
-              style={{
-                backgroundColor: "#10b981",
-                color: "white",
-                padding: "0.5rem 1rem",
-                border: "none",
-                borderRadius: "6px",
-              }}
-              onClick={() => window.open(myActivity.submissionUrl)}
-            >
-              {"Ver archivo adjunto"}
-            </button>}
+            {myActivity && myActivity.submissionUrl && (
+              <button
+                style={{
+                  backgroundColor: "#10b981",
+                  color: "white",
+                  padding: "0.5rem 1rem",
+                  border: "none",
+                  borderRadius: "6px",
+                }}
+                onClick={() => window.open(myActivity.submissionUrl)}
+              >
+                {"Ver archivo adjunto"}
+              </button>
+            )}
             <input
               type="file"
               onChange={handleFileChange}

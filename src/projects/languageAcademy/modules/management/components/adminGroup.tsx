@@ -6,6 +6,7 @@ import {
   UsersResponse,
 } from "../../../models/backlessResponse";
 import {
+  Activity,
   Attendance,
   Course,
   Group,
@@ -19,7 +20,8 @@ import { StudentCard } from "./studentCard";
 import { DbController } from "../../../db/DbController";
 import { AttendanceForm } from "./attendance";
 import { RemedialList } from "./remedialList";
-import { ActivityList } from "./activityList";
+import { ActivityManager } from "./activityManager";
+import { ActivitySubmissionView } from "../../myClasses/components/activitySubmission";
 
 interface Props {
   group: Group;
@@ -38,11 +40,19 @@ const dayNames = [
   "Sábado",
 ];
 
+type ActivitySubmited = {
+  inscription: InscriptionsResponse;
+  activity: Activity;
+};
+
 export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   const [showForm, setShowForm] = useState(false);
   const [showAttendance, setShowAttendance] = useState(false);
   const [showLeveling, setShowLeveling] = useState(false);
-  const [showActivities, setShowActivities] = useState(false); // NUEVO
+  const [showActivities, setShowActivities] = useState(false);
+  const [showActivitySubmited, setShowActivitySubmited] = useState<
+    ActivitySubmited | undefined
+  >(undefined);
   const [inscriptions, setInscriptions] = useState<
     InscriptionsResponse[] | undefined
   >(undefined);
@@ -105,8 +115,16 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
   };
 
   return (
-    <>
-      {!showForm && !showAttendance && !showLeveling && !showActivities ? ( // AGREGADO
+    <div className="" style={{ width: "75vw", position: "relative" }}>
+       {/* Subpantalla de entrega */}
+       {showActivitySubmited && (
+        <ActivitySubmissionView
+          inscription={showActivitySubmited.inscription!}
+          activity={showActivitySubmited.activity}
+          onClose={() => setShowActivitySubmited(undefined)}
+        ></ActivitySubmissionView>
+      )}
+      {!showForm && !showAttendance && !showLeveling && !showActivities && !showActivitySubmited ? ( // AGREGADO
         <div style={styles.mainContainer}>
           <div style={styles.header}>
             <h2 style={styles.title}>Gestión de Grupo</h2>
@@ -179,6 +197,15 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
                     category={category}
                     course={course}
                     group={group}
+                    onSelectActivity={(
+                      activity: Activity,
+                      inscription: InscriptionsResponse
+                    ) =>
+                      setShowActivitySubmited({
+                        activity: activity,
+                        inscription: inscription,
+                      })
+                    }
                   />
                 ))
               ) : (
@@ -277,12 +304,12 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
           group={group}
         />
       ) : (
-        <ActivityList
+        <ActivityManager
           group={group}
           category={category}
           onBack={() => setShowActivities(false)}
         />
       )}
-    </>
+    </div>
   );
 };

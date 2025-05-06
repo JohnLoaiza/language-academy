@@ -17,6 +17,7 @@ import {
   Activity,
 } from "../../models/courseCategory";
 import { ActivitySubmissionView } from "./components/activitySubmission";
+import { ActivityList, btnStyle } from "./components/activityList";
 
 export const MyClasses = () => {
   const [inscriptions, setInscriptions] = useState<
@@ -238,42 +239,7 @@ export const MyClasses = () => {
                       >
                         Solicitar Nivelación
                       </button>}
-                    {group?.activities?.length! > 0 ? (
-                      <div style={{ marginTop: "1rem", width: "100%" }}>
-                        
-                        
-                        <h4 style={{ marginBottom: "0.5rem" }}>Actividades:</h4>
-                        <ul style={{ paddingLeft: "1.2rem" }}>
-                          {group!.activities.map((act) => (
-                            <li key={act.id} style={{ marginBottom: "0.5rem" }}>
-                              <strong>{act.title}</strong> ({act.type}) -{" "}
-                              {new Date(act.date).toLocaleDateString()}
-                              {/*act.fileUrl && (
-                         <a
-                           href={act.fileUrl}
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           style={{ marginLeft: "1rem", color: "#3b82f6" }}
-                         >
-                           Ver archivo
-                         </a>
-                       )*/}
-                              <button
-                                style={{
-                                  marginLeft: "1rem",
-                                  ...btnStyle("#f97316", "0.3rem 0.6rem"),
-                                }}
-                                onClick={() => selectActivity(act, iRes)}
-                              >
-                                Entregar actividad
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : (
-                      <>No hay actividades por mostrar</>
-                    )}
+                    <ActivityList inscription={iRes} activities={group!.activities} onSelectActivity={selectActivity}></ActivityList>
                   </>
                 )}
               </div>
@@ -285,12 +251,3 @@ export const MyClasses = () => {
   );
 };
 
-// Botón reutilizable
-const btnStyle = (bg: string, padding: string = "0.5rem 1rem") => ({
-  padding,
-  backgroundColor: bg,
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-});
