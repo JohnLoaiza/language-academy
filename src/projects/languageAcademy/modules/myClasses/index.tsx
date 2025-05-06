@@ -18,6 +18,12 @@ import {
 } from "../../models/courseCategory";
 import { ActivitySubmissionView } from "./components/activitySubmission";
 import { ActivityList, btnStyle } from "./components/activityList";
+import { RemedialList } from "../management/components/remedialList";
+
+type ShowLeveling = {
+  remedials: RemedialRequest[];
+  group: Group;
+};
 
 export const MyClasses = () => {
   const [inscriptions, setInscriptions] = useState<
@@ -32,6 +38,13 @@ export const MyClasses = () => {
   );
   const [selectedInscription, setSelectedInscription] =
     useState<InscriptionsResponse | null>(null);
+
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoriesResponse | null>(null);
+
+  const [showLeveling, setShowLeveling] = useState<ShowLeveling | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (!inscriptions) {
@@ -139,115 +152,142 @@ export const MyClasses = () => {
 
       {/* Contenido principal */}
       <div style={styles.mainContainer}>
-        <div style={styles.header}>
-          <h2 style={styles.title}>Mis clases</h2>
-        </div>
+        <>
+          {showLeveling ? (
+            <>
+              <RemedialList
+                remedials={showLeveling.remedials}
+                group={showLeveling.group}
+                category={selectedCategory!}
+                onBack={() => setShowLeveling(undefined)}
+              ></RemedialList>
+            </>
+          ) : (
+            <>
+              <div style={styles.header}>
+                <h2 style={styles.title}>Mis clases</h2>
+              </div>
 
-        <div>
-          {inscriptions?.map((iRes) => {
-            const i = iRes.properties;
-            const group = findGroup(i.category, i.course, i.group);
-            const userId = Sesion.props.user.username;
-            const hasUserRemedials = group?.remedials?.some(
-              (r) => r.student === userId
-            );
+              <div>
+                {inscriptions?.map((iRes) => {
+                  const i = iRes.properties;
+                  const group = findGroup(i.category, i.course, i.group);
+                  const userId = Sesion.props.user.username;
+                  const hasUserRemedials = group?.remedials?.filter(
+                    (r) => r.student === userId
+                  );
 
-            return (
-              <div
-                key={i.group}
-                style={{
-                  ...styles.card,
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "1rem",
-                  gap: "1rem",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#eff6ff")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "white")
-                }
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    gap: "2rem",
-                  }}
-                >
-                  <div style={{ flex: 1 }}>
-                    <p>
-                      <strong>Curso:</strong> {i.course}
-                    </p>
-                    <p>
-                      <strong>Grupo:</strong> {i.group}
-                    </p>
-                    <p>
-                      <strong>Categoria:</strong> {i.category}
-                    </p>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      gap: "0.5rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ScoreTable scores={i.scores} />
-
-                    <button
-                      style={btnStyle("#6366f1")}
-                      onClick={() =>
-                        setSelectedInscription(
-                          selectedInscription &&
-                            selectedInscription.id === iRes.id
-                            ? null
-                            : iRes
-                        )
+                  return (
+                    <div
+                      key={i.group}
+                      style={{
+                        ...styles.card,
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "1rem",
+                        gap: "1rem",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#eff6ff")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "white")
                       }
                     >
-                      {selectedInscription && selectedInscription.id === iRes.id
-                        ? "Menos"
-                        : "Ver"}
-                    </button>
-                  </div>
-                </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                          gap: "2rem",
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <p>
+                            <strong>Curso:</strong> {i.course}
+                          </p>
+                          <p>
+                            <strong>Grupo:</strong> {i.group}
+                          </p>
+                          <p>
+                            <strong>Categoria:</strong> {i.category}
+                          </p>
+                        </div>
 
-                {selectedInscription && selectedInscription.id === iRes.id && (
-                  <>
-                  {hasUserRemedials ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            flexWrap: "wrap",
+                            gap: "0.5rem",
+                            alignItems: "center",
+                          }}
+                        >
+                          <ScoreTable scores={i.scores} />
+
                           <button
-                            style={btnStyle("#10b981")}
+                            style={btnStyle("#6366f1")}
                             onClick={() =>
-                              alert(
-                                "Mostrar estado de tus solicitudes de nivelación."
+                              setSelectedInscription(
+                                selectedInscription &&
+                                  selectedInscription.id === iRes.id
+                                  ? null
+                                  : iRes
                               )
                             }
                           >
-                            Ver estado de nivelaciones
+                            {selectedInscription &&
+                            selectedInscription.id === iRes.id
+                              ? "Menos"
+                              : "Ver"}
                           </button>
-                        ) : <button
-                        style={btnStyle("#3b82f6")}
-                        onClick={() =>
-                          handleNivelacion(i.category, i.course, i.group)
-                        }
-                      >
-                        Solicitar Nivelación
-                      </button>}
-                    <ActivityList inscription={iRes} activities={group!.activities} onSelectActivity={selectActivity}></ActivityList>
-                  </>
-                )}
+                        </div>
+                      </div>
+
+                      {selectedInscription &&
+                        selectedInscription.id === iRes.id && (
+                          <>
+                            {hasUserRemedials ? (
+                              <button
+                                style={btnStyle("#10b981")}
+                                onClick={() =>
+                                  setShowLeveling({
+                                    group: group!,
+                                    remedials: hasUserRemedials,
+                                  })
+                                }
+                              >
+                                Ver estado de nivelaciones
+                              </button>
+                            ) : (
+                              <button
+                                style={btnStyle("#3b82f6")}
+                                onClick={() =>
+                                  handleNivelacion(
+                                    i.category,
+                                    i.course,
+                                    i.group
+                                  )
+                                }
+                              >
+                                Solicitar Nivelación
+                              </button>
+                            )}
+                            <ActivityList
+                              inscription={iRes}
+                              activities={group!.activities}
+                              onSelectActivity={selectActivity}
+                            ></ActivityList>
+                          </>
+                        )}
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
+            </>
+          )}
+        </>
       </div>
     </div>
   );
 };
-
