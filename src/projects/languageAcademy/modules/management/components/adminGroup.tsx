@@ -119,6 +119,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
        {/* Subpantalla de entrega */}
        {showActivitySubmited && (
         <ActivitySubmissionView
+        howTeacher={true}
           inscription={showActivitySubmited.inscription!}
           activity={showActivitySubmited.activity}
           onClose={() => setShowActivitySubmited(undefined)}
@@ -168,16 +169,89 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             </div>
           </div>
 
-          <h3
-            style={{
-              marginTop: "2rem",
-              marginBottom: "1rem",
-              fontSize: "1.25rem",
-              color: "#111827",
-            }}
-          >
-            Estudiantes del grupo
-          </h3>
+          <div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+    marginTop: "2rem",
+    marginBottom: "1rem",
+  }}
+>
+  <button
+    style={{ ...styles.button }}
+    onClick={() => setShowForm(true)}
+    onMouseEnter={(e) =>
+      (e.currentTarget.style.backgroundColor =
+        styles.buttonHover.backgroundColor!)
+    }
+    onMouseLeave={(e) =>
+      (e.currentTarget.style.backgroundColor =
+        styles.button.backgroundColor!)
+    }
+  >
+    + Nuevo estudiante
+  </button>
+
+  <button
+    style={{
+      ...styles.button,
+      backgroundColor: "#2563eb",
+    }}
+    onClick={() => setShowAttendance(true)}
+    onMouseEnter={(e) =>
+      (e.currentTarget.style.backgroundColor = "#1d4ed8")
+    }
+    onMouseLeave={(e) =>
+      (e.currentTarget.style.backgroundColor = "#2563eb")
+    }
+  >
+    Tomar asistencia
+  </button>
+
+  <button
+    style={{
+      ...styles.button,
+      backgroundColor: "#10b981",
+    }}
+    onClick={() => setShowLeveling(true)}
+    onMouseEnter={(e) =>
+      (e.currentTarget.style.backgroundColor = "#059669")
+    }
+    onMouseLeave={(e) =>
+      (e.currentTarget.style.backgroundColor = "#10b981")
+    }
+  >
+    Ver nivelaciones
+  </button>
+
+  <button
+    style={{
+      ...styles.button,
+      backgroundColor: "#8b5cf6",
+    }}
+    onClick={() => setShowActivities(true)}
+    onMouseEnter={(e) =>
+      (e.currentTarget.style.backgroundColor = "#7c3aed")
+    }
+    onMouseLeave={(e) =>
+      (e.currentTarget.style.backgroundColor = "#8b5cf6")
+    }
+  >
+    Ver actividades
+  </button>
+</div>
+
+<h3
+  style={{
+    marginBottom: "1rem",
+    fontSize: "1.25rem",
+    color: "#111827",
+  }}
+>
+  Estudiantes del grupo
+</h3>
+
 
           <div
             style={{
@@ -216,71 +290,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
             </div>
           </div>
 
-          <button
-            style={{ ...styles.button, marginTop: "1rem" }}
-            onClick={() => setShowForm(true)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor =
-                styles.buttonHover.backgroundColor!)
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor =
-                styles.button.backgroundColor!)
-            }
-          >
-            + Nuevo estudiante
-          </button>
-
-          <button
-            style={{
-              ...styles.button,
-              marginTop: "1rem",
-              backgroundColor: "#2563eb",
-            }}
-            onClick={() => setShowAttendance(true)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#1d4ed8")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#2563eb")
-            }
-          >
-            Tomar asistencia
-          </button>
-
-          <button
-            style={{
-              ...styles.button,
-              marginTop: "1rem",
-              backgroundColor: "#10b981",
-            }}
-            onClick={() => setShowLeveling(true)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#059669")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#10b981")
-            }
-          >
-            Ver nivelaciones
-          </button>
-
-          <button
-            style={{
-              ...styles.button,
-              marginTop: "1rem",
-              backgroundColor: "#8b5cf6",
-            }}
-            onClick={() => setShowActivities(true)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#7c3aed")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#8b5cf6")
-            }
-          >
-            Ver actividades
-          </button>
+         
         </div>
       ) : showForm ? (
         <StudentForm

@@ -8,6 +8,7 @@ interface Props {
   activity: Activity;
   inscription: InscriptionsResponse;
   onClose: () => void;
+  howTeacher?: boolean
 }
 
 export const findMyActivity = (
@@ -22,6 +23,7 @@ export const ActivitySubmissionView: React.FC<Props> = ({
   activity,
   inscription,
   onClose,
+  howTeacher
 }) => {
   const myActivity: Activity | undefined = findMyActivity(inscription!, activity.id);
 
@@ -159,7 +161,7 @@ export const ActivitySubmissionView: React.FC<Props> = ({
 
           <div style={{ marginTop: "1rem" }}>
             <label>
-              <strong>Subir archivo:</strong>
+              <strong>{howTeacher ? "Adjunto" : "Subir archivo:"}</strong>
             </label>
             <br></br>
             {myActivity && myActivity.submissionUrl && (
@@ -176,14 +178,25 @@ export const ActivitySubmissionView: React.FC<Props> = ({
                 {"Ver archivo adjunto"}
               </button>
             )}
-            <input
+            {!howTeacher && <input
               type="file"
               onChange={handleFileChange}
               style={{ display: "block", marginTop: "0.5rem" }}
-            />
+            />}
           </div>
-
-          <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
+              <br />
+         {howTeacher ? <button
+              style={{
+                backgroundColor: "#10b981",
+                color: "white",
+                padding: "0.5rem 1rem",
+                border: "none",
+                borderRadius: "6px",
+              }}
+              onClick={onClose}
+            >
+              Volver
+            </button> :  <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
             <button
               style={{
                 backgroundColor: "#10b981",
@@ -208,7 +221,7 @@ export const ActivitySubmissionView: React.FC<Props> = ({
             >
               Cancelar
             </button>
-          </div>
+          </div>}
         </>
       )}
     </div>
