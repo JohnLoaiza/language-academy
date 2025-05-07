@@ -5,12 +5,14 @@ import {
   CategoriesResponse,
   UsersResponse,
 } from "../../../models/backlessResponse";
-import { dbConnect } from "../../../db";
-import { Collections } from "../../../db/collections";
 import { AdminGroup } from "./adminGroup";
 import { GroupForm, ScheduleItem } from "./groupForm";
-import { InscriptionModel } from "../../../models/inscriptionModel";
 import { ScoreModel } from "../../../models/scoreModel";
+import { GroupCreationContext } from "../../../../../utils/patterns/chainOfresponsability/contexts/GroupCreationContext";
+import { AddGroupHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/addGroupHandler";
+import { SaveCategoryHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/SaveCategoryHandler";
+import { CreateInscriptionHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/CreateInscriptionHandler";
+import { NotificationHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/NotificationHandler";
 
 interface Props {
   course: Course;
@@ -22,48 +24,34 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
   const [showForm, setShowForm] = useState(false);
 
   const [currentGroup, setCurrentGroup] = useState<Group | null>(null);
-
-  const addGroup = async (user: UsersResponse, name: string, schedules: ScheduleItem[], scores: ScoreModel[]) => {
-    const newGroup: Group = {
-      name: name,
-      teacher: user.properties.username,
-      schedule: schedules,
-      students: [],
-      scores: scores,
-      attendance: [],
-      remedials: []
+  
+  const addGroup = async (
+    user: UsersResponse,
+    name: string,
+    schedules: ScheduleItem[],
+    scores: ScoreModel[],
+    onSuccess: () => void
+  ) => {
+    const context: GroupCreationContext = {
+      user,
+      name,
+      schedules,
+      scores,
+      category,
+      course,
     };
-
-    category.properties.courses
-      .find((c) => c.name === course.name)
-      ?.groups.push(newGroup);
-    var response = await dbConnect()?.editDocument(
-      Collections.CATEGORIES,
-      category.id,
-      category
-    );
-    if (response) {
-      const newInscription: InscriptionModel = {
-        userId: user.properties.username,
-        category: category.properties.name,
-        course: course.name,
-        group: name,
-        scores: []
-      };
-      var createInscription = await dbConnect()?.addDocument(
-        Collections.INSCRIPTIONS,
-        newInscription
-      );
-      if (createInscription) {
-        alert("Grupo creado correctamente");
-        setShowForm(false);
-      } else {
-        alert("No se pudo insertar grupo");
-      }
-    } else {
-      alert("No se pudo insertar grupo");
+  
+    const handlerChain = new AddGroupHandler()
+      .setNext(new SaveCategoryHandler())
+      .setNext(new CreateInscriptionHandler())
+      .setNext(new NotificationHandler(onSuccess));
+  
+    const result = await handlerChain.handle(context);
+    if (!result) {
+      alert("No se pudo crear el grupo");
     }
   };
+  
 
   return (
     <>
@@ -134,7 +122,7 @@ export const GroupsList = ({ category, course, onBack }: Props) => {
         )
       ) : (
         <GroupForm
-          addGroup={(user: UsersResponse, name: string, schedules: ScheduleItem[], scores: ScoreModel[]) => addGroup(user, name, schedules, scores)}
+          addGroup={(user: UsersResponse, name: string, schedules: ScheduleItem[], scores: ScoreModel[]) => addGroup(user, name, schedules, scores, () => {})}
           onBack={() => setShowForm(false)}
         ></GroupForm>
       )}

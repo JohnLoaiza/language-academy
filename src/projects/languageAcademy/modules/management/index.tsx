@@ -1,27 +1,27 @@
 
 import { useEffect, useState } from "react";
 import './index.css';
-import { dbConnect } from "../../db";
 import { CategoriesList } from "./components/categoriesList";
 import { CoursesList } from "./components/coursesList";
 import { GroupsList } from "./components/groupsList";
-import { Collections } from "../../db/collections";
 import {CategoriesResponse } from "../../models/backlessResponse";
 import { Course } from "../../models/courseCategory";
+import { useManagmentController } from "./controllers/useManagmentController";
 
 export const Management = () => {
   const [categories, setCategories] = useState<CategoriesResponse[] | undefined>(undefined);
   const [selectedCategory, setSelectedCategory] = useState<CategoriesResponse | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const {getCategories} = useManagmentController()
 
   useEffect(() => {
     if (!categories) {
-      getCategories();
+      fetchCategories ();
     }
   }, []);
 
-  const getCategories = async () => {
-    setCategories((await dbConnect()?.getCollection(Collections.CATEGORIES))?.map(c => c) as CategoriesResponse[]);
+  const fetchCategories  = async () => {
+    setCategories(await getCategories());
   };
 
   return (

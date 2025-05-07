@@ -4,14 +4,12 @@ import {
   InscriptionsResponse,
 } from "../../models/backlessResponse";
 import { styles } from "../../../../styles";
-import { InscriptionModel } from "../../models/inscriptionModel";
 import { Sesion } from "backless";
 import { ScoreTable } from "./components/scoreComponent";
 import { DbController } from "../../db/DbController";
 import { dbConnect } from "../../db";
 import { Collections } from "../../db/collections";
 import {
-  Course,
   Group,
   RemedialRequest,
   Activity,
