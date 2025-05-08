@@ -12,7 +12,7 @@ interface Props {
   category: CategoriesResponse;
 }
 
-export const StudentForm = ({ onBack, addStudent }: Props) => {
+export const StudentForm = ({ onBack, addStudent, group }: Props) => {
   const [users, setUsers] = useState<UsersResponse[] | undefined>(undefined);
   const [search, setSearch] = useState("");
 
@@ -24,7 +24,7 @@ export const StudentForm = ({ onBack, addStudent }: Props) => {
 
   const getUsers = async () => {
     const result = await dbConnect()?.getCollection(Collections.USERS);
-    const userList = (result?.map(c => c) as UsersResponse[]).filter((u) => u.properties.roles.includes("Student"));
+    const userList = (result?.map(c => c) as UsersResponse[]).filter((u) => u.properties.roles.includes("Student") && !group.students.includes(u.properties.username));
     setUsers(userList);
   };
 
