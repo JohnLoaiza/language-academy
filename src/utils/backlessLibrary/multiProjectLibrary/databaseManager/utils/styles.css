@@ -1,0 +1,385 @@
+/* styles.module.css */
+
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #f4f7fc;
+  color: #333;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 28px;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #34495e;
+  color: white;
+  padding: 30px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 30px;
+  color: #ecf0f1;
+}
+
+.sidebar ul {
+  list-style-type: none;
+}
+
+.rolColorAdmin {
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  color: #ecf0f1;
+}
+
+.rolColorAdmin:hover {
+  background-color: #1abc9c;
+}
+
+.rolColorTeacher {
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  color: #ecf0f1;
+}
+
+.rolColorTeacher:hover {
+  background-color: #1a63bc;
+}
+.rolColorStudent {
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  color: #ecf0f1;
+}
+
+.rolColorStudent:hover {
+  background-color: #9aa738;
+}
+
+.rolColor {
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  color: #ecf0f1;
+}
+
+.rolColor:hover {
+  background-color: transparent;
+}
+
+
+.sidebar ul li.active {
+  background-color: #16a085;
+  font-weight: bold;
+}
+
+/* Dashboard Content Styles */
+.dashboard {
+  display: flex;
+}
+
+.content {
+  margin-left: 240px;
+  padding: 30px;
+  flex-grow: 1;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.content h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.content-div {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.content-div:hover {
+  transform: translateY(-5px);
+}
+
+/* Buttons and links in content */
+.content-div a {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.content-div a:hover {
+  color: #2980b9;
+}
+
+/* Asegura que el contenedor de la tabla permita tooltips sobre él */
+.content-div {
+  z-index: 1; /* Un z-index bajo pero definido */
+}
+
+
+/* Alternativa si sigues viendo el problema */
+.content-div:hover {
+  transform: translateY(-5px);
+  z-index: 10; /* Para que el hover no tape el tooltip */
+}
+
+
+/* Register and Login Forms */
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #34495e;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}
+
+.alert {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.formGroup input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos */
+  justify-content: center; /* Centra verticalmente */
+  min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+  width: 100vw;
+  background-color: #f4f7fc;
+}
+
+.form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 300px; /* Ajusta el ancho según tus necesidades */
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.inputLabel {
+  display: block; /* Hace que la etiqueta ocupe todo el ancho */
+  color: #34495e;
+  margin-bottom: 5px; /* Espacio entre la etiqueta y el campo de entrada */
+}
+
+.inputField {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  background-color: unset;
+}
+
+.submitButton {
+  background-color: #3498db; /* Color del botón */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #2980b9; /* Color del botón al pasar el mouse */
+}
+
+
+/* Estilo de los botones de roles */
+.roleContainer {
+  margin-top: 20px;
+}
+
+.roleTitle {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.rolesList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.roleButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  color: #34495e;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.roleButton:hover {
+  background-color: #bdc3c7;
+}
+
+.roleSelected {
+  background-color: #1abc9c;
+  color: white;
+}
+
+
+/* Centrado del contenedor del formulario */
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Estilos de alineación y margen para el formulario */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Estilos del texto de registro */
+.registerPrompt {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Estilos para el enlace de registro */
+.registerLink {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.registerLink:hover {
+  text-decoration: underline;
+}
+
+.info-icon-container {
+  display: inline-block; /* Mantiene el tamaño adecuado del ícono */
+}

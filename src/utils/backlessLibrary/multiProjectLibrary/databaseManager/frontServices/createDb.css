@@ -1,0 +1,142 @@
+.container {
+  display: flex;
+  flex-direction: row; /* Asegura que los elementos estén en fila */
+  justify-content: space-between; /* Separa los elementos en dos columnas */
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  gap: 20px; /* Espaciado entre columnas */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.left-panel {
+  width: 50%; /* Ajusta el ancho del panel izquierdo */
+}
+
+.editor-container {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.editor-textarea {
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  font-family: monospace;
+  background-color: #282c34;
+  color: #abb2bf;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.pares-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.par-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #ccc;
+}
+
+.pares-container input {
+  width: 48%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #007bff; /* Azul vibrante */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Pequeño efecto de zoom */
+}
+
+button:active {
+  background-color: #004494; /* Azul aún más oscuro al hacer clic */
+  transform: scale(0.98); /* Efecto de clic */
+}
+
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Contenedor de resultado JSON */
+.result-container {
+  width: 50%; /* Se alinea a la derecha */
+  background-color: #282c34;
+  color: #abb2bf;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid #444;
+  height: auto;
+}
+
+.object-container {
+  flex: 1; /* Ocupa todo el espacio disponible en su columna */
+  display: flex;
+  flex-direction: column; /* Asegura que el contenido se apile verticalmente */
+  justify-content: flex-start; /* Alinea el contenido al inicio */
+  align-items: stretch; /* Hace que los elementos internos ocupen todo el ancho */
+  background-color: #282c34;
+  color: #6d7a92;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid #444;
+  height: 100%; /* Asegura que ocupe toda la altura disponible */
+}
+
+
+.pares-container input {
+  width: 48%;
+  padding: 8px;
+  background-color: #3b3f45; /* Fondo oscuro */
+  color: #abb2bf; /* Color del texto */
+  border: 1px solid #555; /* Borde sutil */
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.pares-container input::placeholder {
+  color: #7f848e; /* Color tenue para el placeholder */
+}
+
+.pares-container input:focus {
+  border-color: #61dafb; /* Color azul claro al enfocar */
+  box-shadow: 0 0 5px rgba(97, 218, 251, 0.5);
+}

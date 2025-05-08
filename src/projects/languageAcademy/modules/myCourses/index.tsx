@@ -5,10 +5,10 @@ import {
 } from "../../models/backlessResponse";
 import { styles } from "../../../../styles";
 import { InscriptionModel } from "../../models/inscriptionModel";
-import { Sesion } from "backless";
 import { DbController } from "../../db/DbController";
 import { Course, Group } from "../../models/courseCategory";
 import { AdminGroup } from "../management/components/adminGroup";
+import { Sesion } from "../../../../utils/backlessLibrary/multiProjectLibrary/sesionManager";
 
 export const MyCourses = () => {
   const [inscriptions, setInscriptions] = useState<
@@ -77,7 +77,7 @@ export const MyCourses = () => {
         {!selectedGroup ? (
           <>
             <div style={styles.header}>
-              <h2 style={styles.title}>Clases</h2>
+              <h2 style={styles.title}>Cursos</h2>
             </div>
             <div>
               {inscriptions

@@ -1,0 +1,52 @@
+.info-icon-container {
+  display: inline-block;
+  position: relative; /* Necesario para posicionar correctamente el tooltip */
+}
+
+.info-icon {
+  background-color: #3498db;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.info-tooltip {
+  position: absolute;
+  top: 100%;
+  right:50%;
+  transform: translateX(50%);
+  background-color: rgb(255, 255, 255);
+  color: rgb(68, 67, 67);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.info-icon-container:hover .info-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(50%);
+
+}
+
+  
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

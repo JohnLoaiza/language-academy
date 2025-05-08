@@ -4,7 +4,6 @@ import {
   InscriptionsResponse,
 } from "../../models/backlessResponse";
 import { styles } from "../../../../styles";
-import { Sesion } from "backless";
 import { ScoreTable } from "./components/scoreComponent";
 import { DbController } from "../../db/DbController";
 import { dbConnect } from "../../db";
@@ -17,6 +16,7 @@ import {
 import { ActivitySubmissionView } from "./components/activitySubmission";
 import { ActivityList, btnStyle } from "./components/activityList";
 import { RemedialList } from "../management/components/remedialList";
+import { Sesion } from "../../../../utils/backlessLibrary/multiProjectLibrary/sesionManager";
 
 type ShowLeveling = {
   remedials: RemedialRequest[];
