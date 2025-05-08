@@ -167,7 +167,7 @@ export const MyClasses = () => {
               </div>
 
               <div>
-                {inscriptions?.map((iRes) => {
+                {inscriptions && inscriptions.length > 0 ? inscriptions?.map((iRes) => {
                   const i = iRes.properties;
                   const group = findGroup(i.category, i.course, i.group);
                   const userId = Sesion.props.user.username;
@@ -280,7 +280,7 @@ export const MyClasses = () => {
                         )}
                     </div>
                   );
-                })}
+                }) : <>No tienes ninguna clase registrada</>}
               </div>
             </>
           )}

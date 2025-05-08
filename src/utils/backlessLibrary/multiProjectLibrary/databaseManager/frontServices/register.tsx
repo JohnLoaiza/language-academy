@@ -40,7 +40,7 @@ const Register: React.FC = () => {
             const insertResponse = await axios.post(`${apiRoute}/${Admin.projectSelected!.props.name}/users/insert`, {
                 username: username,
                 password: encryptedPassword,
-                roles: selectedRoles.map(r => r.name)
+                roles: ['Student']
             });
 
             // Manejamos la respuesta exitosa del registro
@@ -87,24 +87,6 @@ const Register: React.FC = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                </div>
-
-                <div className={'roleContainer'}>
-                    <p className={'roleTitle'}>Seleccione roles:</p>
-                    <div className={'rolesList'}>
-                        {rolesList.map((role) => (
-                            <button
-                                type="button"
-                                key={role.name}
-                                className={`${'roleButton'} ${
-                                    selectedRoles.includes(role) ? 'roleSelected' : ''
-                                }`}
-                                onClick={() => handleRoleClick(role)}
-                            >
-                                {role.name}
-                            </button>
-                        ))}
-                    </div>
                 </div>
                 <br></br>
                 <button type="submit" className={'submitButton'}>

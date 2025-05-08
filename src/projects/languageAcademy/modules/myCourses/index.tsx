@@ -80,7 +80,7 @@ export const MyCourses = () => {
               <h2 style={styles.title}>Cursos</h2>
             </div>
             <div>
-              {inscriptions
+              {inscriptions && inscriptions.length > 0 ? inscriptions
                 ?.map((i: InscriptionsResponse) => i.properties)
                 .map((i: InscriptionModel) => (
                   <div
@@ -117,7 +117,7 @@ export const MyCourses = () => {
                     {/* Columna derecha: tabla de calificaciones */}
                     <div style={{ flex: 1 }}></div>
                   </div>
-                ))}
+                )): <>No tienes cursos por dictar registrados</>}
             </div>
           </>
         ) : (

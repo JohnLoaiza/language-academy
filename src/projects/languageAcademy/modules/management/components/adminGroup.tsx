@@ -80,6 +80,7 @@ export const AdminGroup = ({ group, onBack, category, course }: Props) => {
       if (createInscription) {
         alert("Estudiante agregado correctamente");
         setShowForm(false);
+        getInscriptions();
       } else {
         alert("Error al agregar estudiante");
       }
