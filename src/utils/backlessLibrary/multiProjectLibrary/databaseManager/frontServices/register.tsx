@@ -3,7 +3,6 @@ import axios from 'axios';
 import  '../utils/styles.css';
 import { apiRoute } from '../../configs';
 import { Link, useNavigate } from 'react-router-dom';
-import { Rol } from '../../projectsManager/models/ProjectPropiertiesModel';
 import { Admin, PrivateAdmin } from '../../projectsManager';
 import { MainRoutes } from '../../routesManager/multiProjectRoutes';
 
@@ -14,9 +13,7 @@ const Register: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
-    const [selectedRoles, setSelectedRoles] = useState<Rol[]>([]);
     const navigate = useNavigate()
-    const rolesList: Rol[] = Admin.projectSelected!.props.roles;
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -52,12 +49,6 @@ const Register: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleRoleClick = (rol: Rol) => {
-        setSelectedRoles(prevRoles =>
-            prevRoles.includes(rol) ? prevRoles.filter(r => r !== rol) : [...prevRoles, rol]
-        );
     };
 
     return (

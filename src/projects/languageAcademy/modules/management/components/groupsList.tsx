@@ -8,11 +8,6 @@ import {
 import { AdminGroup } from "./adminGroup";
 import { GroupForm, ScheduleItem } from "./groupForm";
 import { ScoreModel } from "../../../models/scoreModel";
-import { GroupCreationContext } from "../../../../../utils/patterns/chainOfresponsability/contexts/GroupCreationContext";
-import { AddGroupHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/addGroupHandler";
-import { SaveCategoryHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/SaveCategoryHandler";
-import { CreateInscriptionHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/CreateInscriptionHandler";
-import { NotificationHandler } from "../../../../../utils/patterns/chainOfresponsability/handlers/NotificationHandler";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { InscriptionModel } from "../../../models/inscriptionModel";

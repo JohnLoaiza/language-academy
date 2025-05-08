@@ -80,11 +80,11 @@ export const CoursesList = ({ category, onBack, onSelectCourse }: Props) => {
             onClick={() => setShowForm(true)}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor =
-                styles.buttonHover.backgroundColor)
+                styles.buttonHover.backgroundColor!)
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor =
-                styles.button.backgroundColor)
+                styles.button.backgroundColor!)
             }
           >
             + Nuevo Curso

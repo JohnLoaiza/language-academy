@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CategoriesResponse, UsersResponse } from "../../../models/backlessResponse";
+import { UsersResponse } from "../../../models/backlessResponse";
 import { dbConnect } from "../../../db";
 import { Collections } from "../../../db/collections";
 import { styles } from "../../../../../styles";

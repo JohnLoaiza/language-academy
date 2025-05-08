@@ -62,10 +62,10 @@ export const CategoriesList = ({ categories, onSelectCategory }: Props) => {
         style={styles.button}
         onClick={()=> setShowForm(true)}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor;
+          e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor!;
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = styles.button.backgroundColor;
+          e.currentTarget.style.backgroundColor = styles.button.backgroundColor!;
         }}
       >
         + Nueva Categoría

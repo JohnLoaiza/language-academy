@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { styles } from "../styles";
 
-interface DynamicFormProps<T> {
+interface DynamicFormProps {
   fields: string[];
   onSubmit: (data: any) => void;
   onClose: () => void;
   title?: string;
 }
 
-export function DynamicForm<T>({ fields, onSubmit, onClose, title = "Nuevo curso" }: DynamicFormProps<T>) {
+export function DynamicForm<T>({ fields, onSubmit, onClose, title = "Nuevo curso" }: DynamicFormProps) {
   const [formData, setFormData] = useState<Partial<T>>({});
 
   const handleChange = (key: string, value: string) => {

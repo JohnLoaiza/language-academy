@@ -14,7 +14,6 @@ interface Props {
 
 export const RemedialList = ({
   remedials,
-  group,
   howTeacher,
   category,
   onBack,

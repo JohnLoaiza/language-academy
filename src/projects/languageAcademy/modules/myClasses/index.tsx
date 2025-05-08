@@ -37,7 +37,7 @@ export const MyClasses = () => {
   const [selectedInscription, setSelectedInscription] =
     useState<InscriptionsResponse | null>(null);
 
-  const [selectedCategory, setSelectedCategory] =
+  const [selectedCategory, ] =
     useState<CategoriesResponse | null>(null);
 
   const [showLeveling, setShowLeveling] = useState<ShowLeveling | undefined>(
