@@ -21,3 +21,15 @@ export const languageAcademy: Project = new Project(
         ]
     }
 )
+
+
+export const languageAcademyMarketing: Project = new Project(
+    {name: 'languageAcademyMarketing',
+        roles: [
+            {name: "Admin", authorizedModules: [{name: "users", component: <Users/>},
+                 {name: Modules.management, component: <Management/>}, ]},
+            {name: "Teacher", authorizedModules: [{name: Modules.myCourses, component: <MyCourses/>} ]},
+            {name: "Student", authorizedModules: [{name: Modules.myClasses, component: <MyClasses/>}]}
+        ]
+    }
+)

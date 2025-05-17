@@ -1,10 +1,10 @@
-import { languageAcademy } from './projects/languageAcademy';
+import { languageAcademy, languageAcademyMarketing } from './projects/languageAcademy';
 import { MultiProjectsRoutes } from './utils/backlessLibrary/multiProjectLibrary/routesManager/multiProjectRoutes';
 
 function App() {
   return (
     <MultiProjectsRoutes
-      suscribeProjects={[languageAcademy]}
+      suscribeProjects={[languageAcademy, languageAcademyMarketing]}
     ></MultiProjectsRoutes>
   );
 }

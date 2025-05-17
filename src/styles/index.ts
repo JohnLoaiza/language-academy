@@ -56,7 +56,6 @@ export const styles: Styles = {
       display: 'flex',
       flexDirection: 'column' as const,
       gap: '1rem',
-      overflowY: 'auto' as const,
     },
     card: {
       padding: '1rem',

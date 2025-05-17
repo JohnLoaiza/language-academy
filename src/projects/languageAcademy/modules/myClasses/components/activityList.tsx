@@ -1,13 +1,18 @@
+import { btnStyle } from "../../../../../styles/buttonStyle";
 import { InscriptionsResponse } from "../../../models/backlessResponse";
-import { Activity } from "../../../models/courseCategory";
+import { Activity, Group, RemedialRequest } from "../../../models/courseCategory";
 import { findMyActivity } from "./activitySubmission";
 
 type Props = {
   activities: Activity[];
   inscription: InscriptionsResponse;
+  group: Group,
+  remedials: RemedialRequest[],
   onSelectActivity: (
     activity: Activity,
-    inscription: InscriptionsResponse
+    inscription: InscriptionsResponse,
+    group: Group,
+    remedials: RemedialRequest[]
   ) => void;
 };
 
@@ -15,6 +20,8 @@ export const ActivityList = ({
   activities,
   onSelectActivity,
   inscription,
+  group,
+  remedials
 }: Props) => {
   return (
     <>
@@ -44,7 +51,7 @@ export const ActivityList = ({
                   marginLeft: "1rem",
                   ...btnStyle(finish ? "#2667cb" : "#f97316", "0.3rem 0.6rem"),
                 }}
-                onClick={() => onSelectActivity(act, inscription)}
+                onClick={() => onSelectActivity(act, inscription, group, remedials)}
               >
               {finish ? "Entregada" : "Entregar actividad"}
               </button>
@@ -58,12 +65,4 @@ export const ActivityList = ({
   );
 };
 
-// Botón reutilizable
-export const btnStyle = (bg: string, padding: string = "0.5rem 1rem") => ({
-  padding,
-  backgroundColor: bg,
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-});
+

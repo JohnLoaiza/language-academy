@@ -8,18 +8,23 @@ import { ScoreTable } from "./components/scoreComponent";
 import { DbController } from "../../db/DbController";
 import { dbConnect } from "../../db";
 import { Collections } from "../../db/collections";
-import {
-  Group,
-  RemedialRequest,
-  Activity,
-} from "../../models/courseCategory";
+import { Group, RemedialRequest, Activity } from "../../models/courseCategory";
 import { ActivitySubmissionView } from "./components/activitySubmission";
-import { ActivityList, btnStyle } from "./components/activityList";
+import { ActivityList } from "./components/activityList";
 import { RemedialList } from "../management/components/remedialList";
 import { Sesion } from "../../../../utils/backlessLibrary/multiProjectLibrary/sesionManager";
+import ShowSchedule from "../management/components/showSchedule";
+import { btnStyle } from "../../../../styles/buttonStyle";
+import ShowGroup from "./components/ShowGroup";
 
-type ShowLeveling = {
+export type ShowLeveling = {
   remedials: RemedialRequest[];
+  group: Group;
+};
+
+type ShowGroupOn = {
+  remedials: RemedialRequest[];
+  inscription: InscriptionsResponse;
   group: Group;
 };
 
@@ -34,11 +39,9 @@ export const MyClasses = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
-  const [selectedInscription, setSelectedInscription] =
-    useState<InscriptionsResponse | null>(null);
+  const [showGroup, setShowGroupOn] = useState<ShowGroupOn | null>(null);
 
-  const [selectedCategory, ] =
-    useState<CategoriesResponse | null>(null);
+  const [selectedCategory] = useState<CategoriesResponse | null>(null);
 
   const [showLeveling, setShowLeveling] = useState<ShowLeveling | undefined>(
     undefined
@@ -74,11 +77,13 @@ export const MyClasses = () => {
 
   const selectActivity = (
     activity: Activity,
-    inscription: InscriptionsResponse
+    inscription: InscriptionsResponse,
+    group: Group,
+    remedials: RemedialRequest[]
   ) => {
     console.log("inscription es");
     console.log(inscription);
-    setSelectedInscription(inscription);
+    setShowGroupOn({ inscription, group, remedials });
     setSelectedActivity(activity);
   };
 
@@ -140,9 +145,9 @@ export const MyClasses = () => {
   return (
     <div className="" style={{ width: "75vw", position: "relative" }}>
       {/* Subpantalla de entrega */}
-      {selectedActivity && selectedInscription && (
+      {selectedActivity && showGroup && (
         <ActivitySubmissionView
-          inscription={selectedInscription!}
+          inscription={showGroup.inscription}
           activity={selectedActivity}
           onClose={() => setSelectedActivity(null)}
         ></ActivitySubmissionView>
@@ -160,6 +165,16 @@ export const MyClasses = () => {
                 onBack={() => setShowLeveling(undefined)}
               ></RemedialList>
             </>
+          ) : showGroup ? (
+            <ShowGroup
+            onBack={() => setShowGroupOn(null)}
+              group={showGroup.group}
+              inscription={showGroup.inscription}
+              remedials={showGroup.remedials}
+              selectActivity={selectActivity}
+              handleNivelacion={handleNivelacion}
+              setShowLeveling={setShowLeveling}
+            />
           ) : (
             <>
               <div style={styles.header}>
@@ -167,120 +182,83 @@ export const MyClasses = () => {
               </div>
 
               <div>
-                {inscriptions && inscriptions.length > 0 ? inscriptions?.map((iRes) => {
-                  const i = iRes.properties;
-                  const group = findGroup(i.category, i.course, i.group);
-                  const userId = Sesion.props.user.username;
-                  const hasUserRemedials = group?.remedials?.filter(
-                    (r) => r.student === userId
-                  );
+                {inscriptions && inscriptions.length > 0 ? (
+                  inscriptions?.map((iRes) => {
+                    const i = iRes.properties;
+                    const group = findGroup(i.category, i.course, i.group);
+                    const userId = Sesion.props.user.username;
+                    const hasUserRemedials = group?.remedials?.filter(
+                      (r) => r.student === userId
+                    );
 
-                  return (
-                    <div
-                      key={i.group}
-                      style={{
-                        ...styles.card,
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "1rem",
-                        gap: "1rem",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor = "#eff6ff")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor = "white")
-                      }
-                    >
+                    return (
                       <div
+                        key={i.group}
                         style={{
+                          ...styles.card,
                           display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
-                          gap: "2rem",
+                          flexDirection: "column",
+                          padding: "1rem",
+                          gap: "1rem",
                         }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.backgroundColor = "#eff6ff")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.backgroundColor = "white")
+                        }
                       >
-                        <div style={{ flex: 1 }}>
-                          <p>
-                            <strong>Curso:</strong> {i.course}
-                          </p>
-                          <p>
-                            <strong>Grupo:</strong> {i.group}
-                          </p>
-                          <p>
-                            <strong>Categoria:</strong> {i.category}
-                          </p>
-                        </div>
-
                         <div
                           style={{
                             display: "flex",
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            gap: "0.5rem",
-                            alignItems: "center",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            gap: "2rem",
                           }}
                         >
-                          <ScoreTable scores={i.scores} />
+                          <div style={{ flex: 1 }}>
+                            <p>
+                              <strong>Curso:</strong> {i.course}
+                            </p>
+                            <p>
+                              <strong>Grupo:</strong> {i.group}
+                            </p>
+                            <p>
+                              <strong>Categoria:</strong> {i.category}
+                            </p>
+                          </div>
 
-                          <button
-                            style={btnStyle("#6366f1")}
-                            onClick={() =>
-                              setSelectedInscription(
-                                selectedInscription &&
-                                  selectedInscription.id === iRes.id
-                                  ? null
-                                  : iRes
-                              )
-                            }
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              flexWrap: "wrap",
+                              gap: "0.5rem",
+                              alignItems: "center",
+                            }}
                           >
-                            {selectedInscription &&
-                            selectedInscription.id === iRes.id
-                              ? "Menos"
-                              : "Ver"}
-                          </button>
+                            <ScoreTable scores={i.scores} />
+
+                            <button
+                              style={btnStyle("#6366f1")}
+                              onClick={() =>
+                                setShowGroupOn({
+                                  inscription: iRes,
+                                  group: group!,
+                                  remedials: hasUserRemedials!,
+                                })
+                              }
+                            >
+                              {"Ver"} 
+                            </button>
+                          </div>
                         </div>
                       </div>
-
-                      {selectedInscription &&
-                        selectedInscription.id === iRes.id && (
-                          <>
-                            {hasUserRemedials ? (
-                              <button
-                                style={btnStyle("#10b981")}
-                                onClick={() =>
-                                  setShowLeveling({
-                                    group: group!,
-                                    remedials: hasUserRemedials,
-                                  })
-                                }
-                              >
-                                Ver estado de nivelaciones
-                              </button>
-                            ) : (
-                              <button
-                                style={btnStyle("#3b82f6")}
-                                onClick={() =>
-                                  handleNivelacion(
-                                    i.category,
-                                    i.course,
-                                    i.group
-                                  )
-                                }
-                              >
-                                Solicitar Nivelación
-                              </button>
-                            )}
-                            <ActivityList
-                              inscription={iRes}
-                              activities={group!.activities}
-                              onSelectActivity={selectActivity}
-                            ></ActivityList>
-                          </>
-                        )}
-                    </div>
-                  );
-                }) : <>No tienes ninguna clase registrada</>}
+                    );
+                  })
+                ) : (
+                  <>No tienes ninguna clase registrada</>
+                )}
               </div>
             </>
           )}
